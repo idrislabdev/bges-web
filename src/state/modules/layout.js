@@ -2,11 +2,11 @@ export const state = {
   layoutType: 'twocolumn',
   layoutWidth: 'fluid',
   sidebarSize: 'lg',
-  topbar: 'dark',
-  mode: 'dark',
+  topbar: 'light',
+  mode: 'light',
   position: 'fixed',
   sidebarView: 'default',
-  sidebarColor: 'dark',
+  sidebarColor: 'light',
   sidebarImage: 'none',
   preloader: 'disable'
 }

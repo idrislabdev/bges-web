@@ -237,7 +237,7 @@ export default {
 
 <template>
   <div id="layout-wrapper">
-    <NavBar />
+    <NavBar :user="currentUser"/>
     <div>
       <!-- ========== Left Sidebar Start ========== -->
       <!-- ========== App Menu ========== -->
@@ -249,8 +249,8 @@ export default {
             <span class="logo-sm">
               <img src="@assets/images/logo-sm.png" alt="" height="22" />
             </span>
-            <span class="logo-lg">
-              Monitoring
+            <span class="logo-lg logo-text">
+              <h2>ReportTool</h2>
             </span>
           </router-link>
           <!-- Light Logo-->
@@ -407,9 +407,12 @@ export default {
   .logo-lg {
     &.logo-text {
       h2 {
-        margin: 15px 0px 0px 0px;
-        padding: 5px 0px;
-        border: 1px solid;
+        margin: 10px 0px 10px 0px;
+        padding: 10px 0px;
+        // border: 1px solid;
+        font-size: 25px;
+        font-weight: 700;
+        color: #1a1d21;
       }
     }
   }

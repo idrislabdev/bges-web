@@ -1,10 +1,19 @@
 <script>
 import i18n from "../i18n";
+import { authMethods } from "@state/helpers";
 
 /**
  * Nav-bar Component
  */
 export default {
+  props: {
+    user: {
+      type: Array,
+      default: () => {
+        return [];
+      },
+    },
+  },
   data() {
     return {
       languages: [
@@ -57,8 +66,8 @@ export default {
     };
   },
   components: {},
-
   methods: {
+    ...authMethods,
     toggleHamburgerMenu() {
       var windowSize = document.documentElement.clientWidth;
 
@@ -172,6 +181,9 @@ export default {
         });
       }
     },
+    keluar(){
+			this.logOut();
+		},
   },
   computed: {},
   mounted() {
@@ -294,36 +306,13 @@ export default {
                       fw-medium
                       user-name-text
                     "
-                    >Anna Adame</span
-                  >
-                  <span
-                    class="
-                      d-none d-xl-block
-                      ms-1
-                      fs-12
-                      text-muted
-                      user-name-sub-text
-                    "
-                    >Founder</span
+                    >{{user.nama}}</span
                   >
                 </span>
               </span>
             </button>
             <div class="dropdown-menu dropdown-menu-end">
-              <h6 class="dropdown-header">Welcome Anna!</h6>
-              <router-link class="dropdown-item" to="/pages/profile"
-                ><i
-                  class="
-                    mdi mdi-account-circle
-                    text-muted
-                    fs-16
-                    align-middle
-                    me-1
-                  "
-                ></i>
-                <span class="align-middle">Profile</span>
-              </router-link>
-              <b-link class="dropdown-item" href="/logout"
+              <b-link class="dropdown-item" @click="keluar"
                 ><i
                   class="mdi mdi-logout text-muted fs-16 align-middle me-1"
                 ></i>

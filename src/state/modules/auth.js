@@ -51,17 +51,10 @@ export const actions = {
 
     // Logs out the current user.
     logOut({ commit }) {
-        // eslint-disable-next-line no-unused-vars
         commit('SET_CURRENT_USER', null)
-        return new Promise((resolve, reject) => {
-            // eslint-disable-next-line no-unused-vars
-            getFirebaseBackend().logout().then((response) => {
-                resolve(true);
-            }).catch((error) => {
-                reject(this._handleError(error));
-            })
-        });
-    },
+        window.localStorage.clear();
+        window.location.reload();
+      },
 
     // register the user
     register({ commit, dispatch, getters }, { username, email, password } = {}) {
