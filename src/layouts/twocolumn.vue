@@ -12,7 +12,6 @@ authComputed,
 import NavBar from "@components/nav-bar";
 import RightBar from "@components/right-bar";
 import Footer from "@components/footer";
-import { exit } from "process";
 
 /**
  * Vertical layout
@@ -105,7 +104,6 @@ export default {
     
             if (links[1] === pathname[1] && links[2] === pathname [2]) {
               matchingMenuItem = x
-              exit;
             }
           });
         }
