@@ -1,0 +1,197 @@
+[
+    {
+        "name": "web.dashboard",
+        "description": "Halaman Dashboard",
+        "child" : [
+            {
+                "name": "web.dashboard",
+                "description": "Halaman Dashboard",
+                "selected" : false
+            }
+        ]
+    },
+    {
+        "name": "web.setting",
+        "description": "Setting",
+        "child": [
+            {
+                "name": "web.setting.dinas",
+                "description": "Setting : Halaman Dinas",
+                "selected": false,
+                "child": [
+                    {
+                        "name": "web.setting.dinas.create",
+                        "description": "Buat data dinas baru",
+                        "selected": false
+                    },
+                    {
+                        "name": "web.setting.dinas.read",
+                        "description": "Lihat data dinas",
+                        "selected": false
+                    },
+                    {
+                        "name": "web.setting.dinas.update",
+                        "description": "Update data dinas",
+                        "selected": false
+                    },
+                    {
+                        "name": "web.setting.dinas.delete",
+                        "description": "Hapus data dinas",
+                        "selected": false
+                    }
+                ]
+            },
+            {
+                "name": "web.setting.peran",
+                "description": "Setting : Halaman Peran",
+                "selected": false,
+                "child": [
+                    {
+                        "name": "web.setting.peran.create",
+                        "description": "Buat data peran baru",
+                        "selected": false
+                    },
+                    {
+                        "name": "web.setting.peran.read",
+                        "description": "Lihat data peran",
+                        "selected": false
+                    },
+                    {
+                        "name": "web.setting.peran.update",
+                        "description": "Update data peran",
+                        "selected": false
+                    },
+                    {
+                        "name": "web.setting.peran.delete",
+                        "description": "Hapus data peran",
+                        "selected": false
+                    }
+                ]
+            },
+            {
+                "name": "web.setting.pengguna",
+                "description": "Setting : Halaman Pengguna",
+                "selected": false,
+                "child": [
+                    {
+                        "name": "web.setting.pengguna.create",
+                        "description": "Buat data pengguna baru",
+                        "selected": false
+                    },
+                    {
+                        "name": "web.setting.pengguna.read",
+                        "description": "Lihat data pengguna",
+                        "selected": false
+                    },
+                    {
+                        "name": "web.setting.pengguna.update",
+                        "description": "Update data pengguna",
+                        "selected": false
+                    },
+                    {
+                        "name": "web.setting.pengguna.delete",
+                        "description": "Hapus data pengguna",
+                        "selected": false
+                    }
+                ]
+            }
+        ]
+    },
+    {
+        "name": "web.master",
+        "description": "Master",
+        "child": [
+            {
+                "name": "web.master_pekerjaan",
+                "description": "Master Pekerjaan",
+                "selected": false,
+                "child": [
+                    {
+                        "name": "web.master_pekerjaan.pekerjaan.create",
+                        "description": "Buat master pekerjaan baru",
+                        "selected": false
+                    },
+                    {
+                        "name": "web.master_pekerjaan.pekerjaan.read",
+                        "description": "Lihat master pekerjaan",
+                        "selected": false
+                    },
+                    {
+                        "name": "web.master_pekerjaan.pekerjaan.update",
+                        "description": "Update master pekerjaan",
+                        "selected": false
+                    },
+                    {
+                        "name": "web.master_pekerjaan.pekerjaan.delete",
+                        "description": "Hapus master pekerjaan",
+                        "selected": false
+                    },
+                    {
+                        "name": "web.master_pekerjaan.lokasi.create",
+                        "description": "Buat master lokasi baru",
+                        "selected": false
+                    },
+                    {
+                        "name": "web.master_pekerjaan.lokasi.read",
+                        "description": "Lihat master lokasi",
+                        "selected": false
+                    },
+                    {
+                        "name": "web.master_pekerjaan.lokasi.update",
+                        "description": "Update master lokasi",
+                        "selected": false
+                    },
+                    {
+                        "name": "web.master_pekerjaan.lokasi.delete",
+                        "description": "Hapus master lokasi",
+                        "selected": false
+                    }
+                ]
+            }
+        ]
+    },
+    {
+        "name" : "periode_pekerjaan",
+        "description" : "Periode Pekerjaan",
+        "child" : [
+            {
+                "name": "web.periode_pekerjaan",
+                "description": "Peiode Pekerjaan",
+                "selected": false,
+                "child": [
+                    {
+                        "name": "web.periode_pekerjaan_lokasi.create",
+                        "description": "Buat master pekerjaan baru",
+                        "selected": false
+                    },
+                    {
+                        "name": "web.periode_pekerjaan_lokasi.read",
+                        "description": "Lihat master pekerjaan",
+                        "selected": false
+                    },
+                    {
+                        "name": "web.periode_pekerjaan_lokasi.update",
+                        "description": "Update master pekerjaan",
+                        "selected": false
+                    },
+                    {
+                        "name": "web.periode_pekerjaan_lokasi.delete",
+                        "description": "Hapus master pekerjaan",
+                        "selected": false
+                    }
+                ]
+            }
+        ]
+    },
+    {
+        "name": "web.web.laporan",
+        "description": "Halaman Laporan",
+        "child" : [
+            {
+                "name": "web.laporan.pekerjaan_lokasi",
+                "description": "Halaman laporan lokasi",
+                "selected" : false
+            }
+        ]
+    }
+]
