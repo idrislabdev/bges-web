@@ -18,7 +18,6 @@ export const actions = {
     url,
     body
   } = {}) {
-    console.log(body)
     return broker.fetch.post(url, body)
       .then(res => {
         return res

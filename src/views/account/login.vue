@@ -44,7 +44,6 @@ export default {
         password: this.password,
       })
         .then((response) => {
-          console.log(response.dinases[0].pekerjaans[0].id)
           this.tryingToLogIn = false;
           this.isAuthError = false;
           this.$router.push({

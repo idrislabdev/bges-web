@@ -91,7 +91,6 @@ export default {
                     this.$router.push({ name: 'ListDinas' })
                     toast.info(content, {
                         position: toast.POSITION.TOP_CENTER,
-                        theme: toast.auto,
                         closeButton : false,
                         hideProgressBar: true
                     });

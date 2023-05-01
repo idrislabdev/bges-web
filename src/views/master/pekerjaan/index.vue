@@ -113,8 +113,7 @@ export default {
     computed: {},
     watch: {
         '$route.params.route_dinas_id': {
-            handler: function (newVal) {
-              console.log(newVal)
+            handler: function () {
               this.getPekerjaans()
             }
         },
@@ -253,7 +252,6 @@ export default {
                 }
                 toast.info(content, {
                     position: toast.POSITION.TOP_CENTER,
-                    theme: toast.auto,
                     closeButton : false,
                     hideProgressBar: true
                 });
@@ -308,7 +306,6 @@ export default {
                 }
                 toast.info(content, {
                     position: toast.POSITION.TOP_CENTER,
-                    theme: toast.auto,
                     closeButton : false,
                     hideProgressBar: true
                 });
@@ -361,7 +358,6 @@ export default {
                   
                   toast.info(this.title + ' berhasil dihapus', {
                       position: toast.POSITION.TOP_CENTER,
-                      theme: toast.auto,
                       closeButton : false,
                       hideProgressBar: true
                   });
@@ -501,17 +497,17 @@ export default {
                           </div>
                           <a 
                             href="javascript:void(0);" 
-                            class="fs-15 folder-name stretched-link" 
+                            class="fs-15 folder-name stretched-link text-dark" 
                             @contextmenu="onContextMenu($event, folder.id, folder.parent_id)"
                             @click="listPekerjaanSub(folder.id)"
                           >
                               {{ folder.nama}} 
                           </a>
                         </div>
-                        <div class="hstack mt-4 text-muted">
+                        <!-- <div class="hstack mt-4 text-muted">
                           <span class="me-auto"><b>{{ folder.files }}</b> Total Lokasi</span>
                           <span><b>{{ folder.storage }}</b>GB</span>
-                        </div>
+                        </div> -->
                       </b-card-body>
                     </b-card>
                   </b-col>
@@ -676,7 +672,7 @@ export default {
                         Simpan Data
                     </b-button>
                 </div>
-            </b-form>request-
+            </b-form>
         </b-modal>
         <b-modal 
             v-model="modalAddTitikLokasi" 
@@ -858,6 +854,6 @@ export default {
     height: 185px;
     display: flex;
     flex-direction: column;
-    justify-content: space-between;
+    justify-content: center;
   }
 </style>

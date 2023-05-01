@@ -3,12 +3,17 @@ import { getFirebaseBackend } from '../../authUtils.js'
 
 export const state = {
     currentUser: getSavedState('auth.currentUser'),
+    modalPassword : false,
+
 }
 
 export const mutations = {
     SET_CURRENT_USER(state, newValue) {
         state.currentUser = newValue
         saveState('auth.currentUser', newValue)
+    },
+    SHOW_MODAL_PASSWORD (state, modalPassword) {
+        state.modalPassword = modalPassword
     }
 }
 
@@ -54,7 +59,19 @@ export const actions = {
         commit('SET_CURRENT_USER', null)
         window.localStorage.clear();
         window.location.reload();
-      },
+    },
+
+    showModalPassword({ commit }, { modalPassword }) {
+        commit('SHOW_MODAL_PASSWORD', modalPassword)
+    },
+    changePassword(_, { password, confirmPassword } = {}) {
+        return broker.fetch.post('/web/auth/change-password', {
+            password: password,
+            password_confirmation: confirmPassword,
+        }).then(res => {
+            return res
+        })
+    },
 
     // register the user
     register({ commit, dispatch, getters }, { username, email, password } = {}) {

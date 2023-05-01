@@ -6,12 +6,9 @@ import "prismjs";
 import "prismjs/themes/prism.css";
 import { crudMethods, pageMethods } from "@/src/state/helpers";
 
-import { toast } from 'vue3-toastify';
 import 'vue3-toastify/dist/index.css';
 import { debounce } from 'lodash'
 
-
-import Swal from "sweetalert2";
 
 export default {
     page: {
@@ -53,34 +50,14 @@ export default {
             dataTable: [],
             pekerjaans: [],
             pekerjaan: {},
-            nama: '',
-            deskripsi: '',
-            noUrut: null,
-            parentId: null,
-            namaLokasi: '',
-            noUrutLokasi: '',
-            download: 0,
-            upload: 0,
-            minDownload: 0,
-            minUpload: 0,
-            alamatIp: '',
-            nomorPemasangan: '',
-            alamatPemasangan: '',
-            keterangan: '',
-            latitude: '',
-            longitude: '',
-            modalAddPekerjaan: false,
-            modalAddTitikLokasi: false,
+            modalLoading: false,
+            downloadLoading: false,
             typeCrud: 'insertData',
             errors: {
                 nama: null,
                 deskripsi: null,
                 no_urut: null,
             },
-            pkIdPekerjaan: null,
-            pkIdLokasi: null,
-            menuAddPekerjaan: false,
-            menuPekerjaan: false,
             folderActiveId: null,
             optionsComponent: {
               theme: "flat dark",
@@ -139,7 +116,8 @@ export default {
         },
     },
     mounted() {
-      this.getPekerjaans()    
+        // this.modalLoading = true
+        this.getPekerjaans()    
     },
     methods: {
         ...crudMethods,
@@ -186,27 +164,11 @@ export default {
             this.pekerjaan = this.pekerjaans.find((x) => x.id === item.parent_id)
           }
         },
-        listPekerjaanLokasi() {
-          this.listData({
-                url: `/web/master/dinas/${this.$route.params.route_dinas_id}/pekerjaan/${this.pkIdPekerjaan}/lokasi?page=${this.currentPage}&q=${this.search}`,
-            }).then((response) => {
-                const { data, meta } = response.data
-                this.dataTable = []
-                this.rows = meta.total
-                this.perPage = meta.per_page
-                this.currentPage = meta.current_page
-                this.from = meta.from
-                this.to = meta.to
-                this.total = meta.total
-
-                this.dataTable = data
-            })
-        },
         padWithLeadingZeros(num, totalLength) {
             return String(num).padStart(totalLength, '0');
         },
         downloadLaporan(month, year) {
-            console.log(this.pekerjaan.nama)
+            this.modalLoading = true
             let body = {
                 "pekerjaan_id"  : this.pekerjaan.id,
                 "periode"       : year+this.padWithLeadingZeros(month, 2)
@@ -221,219 +183,8 @@ export default {
                 link.setAttribute('download', `Laporan pekerjaan ${this.pekerjaan.nama} bulan ${this.month[month-1]} tahun ${year}.pdf`)
                 document.body.appendChild(link)
                 link.click()
+                this.modalLoading = false
             })
-        },
-        listPekerjaanSub(id) {
-          this.folderActiveId = id
-          this.pkIdPekerjaan = id
-          this.listData({
-                url: `/web/master/dinas/${this.$route.params.route_dinas_id}/pekerjaan/${id}/lokasi?page=${this.currentPage}&q=${this.search}`,
-            }).then((response) => {
-                const { data, meta } = response.data
-                this.dataTable = []
-                this.rows = meta.total
-                this.perPage = meta.per_page
-                this.currentPage = meta.current_page
-                this.from = meta.from
-                this.to = meta.to
-                this.total = meta.total
-
-                this.dataTable = data
-            })
-        },
-        storePekerjaan() {
-            let body = {
-                nama: this.nama,
-                deskripsi: this.deskripsi,
-                no_urut: this.noUrut,
-                dinas_id: this.$route.params.route_dinas_id
-            }
-
-            if (this.parentId !== null)
-              body.parent_id = this.parentId; 
-
-            let url = `/web/master/dinas/${this.$route.params.route_dinas_id}/pekerjaan`
-
-            if (this.typeCrud === 'updateData') {
-                url = `${url}/${this.pkIdPekerjaan}`
-            } 
-            this[this.typeCrud]({ url: url, body: body })
-            .then((response) => {
-            const { data } = response
-            if (data) {
-                this.modalAddPekerjaan = false
-                this.getPekerjaans();
-                this.clearAddPekerjaan();
-                let content = ''
-                if (this.typeCrud === 'insertData') {
-                    content = 'Pekerjaan berhasil disimpan'
-                } else {
-                    content = 'Pekerjaan berhasil diperbaharui'
-                }
-                toast.info(content, {
-                    position: toast.POSITION.TOP_CENTER,
-                    theme: toast.auto,
-                    closeButton : false,
-                    hideProgressBar: true
-                });
-            }
-            })
-            .catch((err) => {
-                console.log(err)
-                if (err.response.status === 403) {
-                    // this.errorMessage = JSON.parse(
-                    //   err.response.request.response
-                    // ).message;
-                } else if (err.response.status === 422) {
-                    this.errors = err.response.data.errors
-                }
-            })
-        },
-        storeLokasi() {
-            let body = {
-                nama              : this.namaLokasi,
-                no_urut           : this.noUrutLokasi,
-                download          : this.download,
-                upload            : this.upload,
-                min_download      : this.minDownload,
-                min_upload        : this.minUpload,
-                alamat_ip         : this.alamatIp,
-                nomor_pemasangan  : this.nomorPemasangan,
-                alamat_pemasangan : this.alamatPemasangan,
-                keterangan        : this.keterangan,
-                latitude          : this.latitude,
-                longitude         : this.longitude
-            }
-
-            let url = `/web/master/dinas/${this.$route.params.route_dinas_id}/pekerjaan/${this.pkIdPekerjaan}/lokasi`
-            let typeCrud = 'insertData'
-
-            if (this.pkIdLokasi !== null) {
-                typeCrud = 'updateData'
-                url = `${url}/${this.pkIdLokasi}`
-            } 
-            this[typeCrud]({ url: url, body: body })
-            .then((response) => {
-            const { data } = response
-            if (data) {
-                this.modalAddTitikLokasi = false
-                this.listPekerjaanLokasi();
-                // this.clearAddPekerjaan();
-                let content = ''
-                if (typeCrud === 'insertData') {
-                    content = 'Lokasi berhasil disimpan'
-                } else {
-                    content = 'Lokasi berhasil diperbaharui'
-                }
-                toast.info(content, {
-                    position: toast.POSITION.TOP_CENTER,
-                    theme: toast.auto,
-                    closeButton : false,
-                    hideProgressBar: true
-                });
-            }
-            })
-            .catch((err) => {
-                console.log(err)
-                if (err.response.status === 403) {
-                    // this.errorMessage = JSON.parse(
-                    //   err.response.request.response
-                    // ).message;
-                } else if (err.response.status === 422) {
-                    this.errors = err.response.data.errors
-                }
-            })
-        },
-        showPekerjaan() {
-            this.typeCrud = 'updateData'
-            this.listData({
-                url: `web/master/dinas/${this.$route.params.route_dinas_id}/pekerjaan/${this.pkIdPekerjaan}`,
-            }).then((response) => {
-                const { data } = response.data
-                this.nama = data.nama;
-                this.deskripsi = data.deskripsi;
-                this.noUrut = data.no_urut;
-                this.parentId = data.parent_id;
-                this.modalAddPekerjaan = true;
-            })
-        },
-        destroy() {
-          Swal.fire({
-            title: "Apakah anda yakin?",
-            text: "Data Pekerjaan Akan Dihapus Dari Sistem!",
-            icon: "warning",
-            showCancelButton: true,
-            cancelButtonColor: "#f46a6a",
-            cancelButtonText: 'Batal',
-            confirmButtonColor: "#34c38f",
-            confirmButtonText: "Ya, Hapus Saja!",
-          }).then((result) => {
-            if (result.value) {
-              let url = `${this.apiUrl}/${this.pkIdPekerjaan}`;
-              this.deleteData({
-                  url: url,
-              })
-              .then((response) => {
-                  console.log(response)
-                  this.modalDelete = false
-                  this.getPekerjaans()
-                  
-                  toast.info(this.title + ' berhasil dihapus', {
-                      position: toast.POSITION.TOP_CENTER,
-                      theme: toast.auto,
-                      closeButton : false,
-                      hideProgressBar: true
-                  });
-              })
-              .catch((err) => {
-                  console.log(err)
-                  this.modalDelete = false
-                  let message = JSON.parse(err.response.request.response)
-                  this.textAllert = message.message
-                  this.modalAllert = true
-              })
-              // Swal.fire("Deleted!", "Your file has been deleted.", "success");
-            }
-          });
-        },
-        showDestroy(data) {
-            this.pkId = data.id
-            this.nama = data.nama
-            this.modalDelete = true
-        },
-        showModalPekerjaan(from) {
-          if (from === null) {
-            this.typeCrud = 'insertData'
-            this.parentId =  this.pekerjaan.id 
-          } else {
-            this.parentId = null
-          }
-          this.modalAddPekerjaan = true;
-        },
-        clearAddPekerjaan() {
-          this.nama = '';
-          this.deskripsi = '';
-          this.noUrut = '';
-          this.pkIdPekerjaan = null
-          this.parentId = null
-        },
-        onContextMenuPekerjaan(e) {
-          e.preventDefault();
-          this.pkIdPekerjaan = null;
-          this.optionsComponent.x = e.x;
-          this.optionsComponent.y = e.y;
-          this.menuAddPekerjaan = true;
-        },
-        onContextMenu(e, id, parentId) {
-          this.parentId = parentId;
-          this.pkIdPekerjaan = id;
-          e.preventDefault();
-          e.stopPropagation();
-          //Set the mouse position
-          this.optionsComponent.x = e.x;
-          this.optionsComponent.y = e.y;
-          //Show menu
-          this.menuPekerjaan = true;
         },
     }
 };
@@ -493,251 +244,41 @@ export default {
                           </div>
                           <a 
                             href="javascript:void(0);" 
-                            class="fs-15 folder-name stretched-link d-flex flex-column" 
+                            class="fs-15 folder-name stretched-link d-flex flex-column text-dark" 
                             @click="downloadLaporan(i, date.getFullYear())"
                           >
                               <span>Laporan</span>
-                              <spann>Bulan {{ month[i-1]  }} {{ date.getFullYear() }}</spann>
+                              <span>{{ pekerjaan.nama }}</span>
+                              <span>Bulan {{ month[i-1]  }} {{ date.getFullYear() }}</span>
                           </a>
                         </div>
                       </b-card-body>
                     </b-card>
-                  </b-col>
-
+                    </b-col>
                 </b-row>
               </div>
             </div>
           </div>
         </div>
         <b-modal
-            v-model="modalDelete"
+            v-model="modalLoading"
             title-class="text-center"
             centered
             no-close-on-backdrop
+            no-close-on-esc
             hide-header
             hide-footer
             class="v-modal-custom"
         >
-            <div class="modal-icon">
-                <i class="uil uil-trash-alt"></i>
-            </div>
-            <h5>
-                Hapus {{ title }}
-            </h5>
-            <p>
-                Anda Yakin ingin menghapus <span>”{{ nama }}”</span>?
-            </p>
-            <div class="modal-footer v-modal-footer">
-                <button class="btn btn-outline-dark rounded-0" @click="modalDelete = false">
-                    Batal
-                </button>
-                <button class="btn btn-outline-danger rounded-0" @click="destroy">
-                    Hapus
-                </button>
-            </div>
-        </b-modal>
-        <b-modal 
-            v-model="modalAddPekerjaan" 
-            hide-footer title="Tambah Pekerjaan" 
-            title-class="exampleModalLabelFolder" 
-            class="v-modal-custom" 
-            modal-class="zoomIn" 
-            centered
-            header-class="p-3 bg-soft-success"
-            no-close-on-backdrop
-            no-close-on-esc
-        >
-            <b-form autocomplete="off" class="needs-validation createfolder-form" id="createfolder-form" novalidate>
-                <b-row class="gy-4 mb-2">
-                    <b-col xxl="12">
-                        <div>
-                            <label for="nama" class="form-label">Nama</label>
-                            <input v-model="nama" type="text" class="form-control" id="nama">
-                            <span v-if="errors.nama" class="text-required">
-                                {{ errors.nama.toString() }}
-                            </span>
-                        </div>
-                    </b-col>
-                </b-row>
-                <b-row class="gy-4 mb-2">
-                    <b-col xxl="12">
-                        <div>
-                            <label for="deskripsi" class="form-label">Deskripsi</label>
-                            <b-form-textarea
-                                id="textarea"
-                                v-model="deskripsi"
-                                rows="3"
-                                max-rows="3"
-                                no-resize
-                            ></b-form-textarea>
-                            <span v-if="errors.deskripsi" class="text-required">
-                                {{ errors.deskripsi.toString() }}
-                            </span>
-                        </div>
-                    </b-col>
-                </b-row>
-                <b-row class="gy-4 mb-2">
-                    <b-col xxl="12">
-                        <div>
-                            <label for="noUrut" class="form-label">No. Urut</label>
-                            <input v-model="noUrut" type="text" class="form-control" id="deskripsi">
-                            <span v-if="errors.no_urut" class="text-required">
-                                {{ errors.no_urut.toString() }}
-                            </span>
-                        </div>
-                    </b-col>
-                </b-row>
-                <div class="hstack gap-2 justify-content-end mt-3">
-                    <b-button type="button" variant="ghost-danger" data-bs-dismiss="modal" id="addFolderBtn-close" @click="modalAddPekerjaan = false">
-                        <i class="ri-close-line align-bottom"></i> Tutup
-                    </b-button>
-                    <b-button type="button" variant="primary" id="createfolder-btn" @click="storePekerjaan">
-                        Simpan Data
-                    </b-button>
+           <div class="d-flex flex-column justify-content-center align-items-center gap-2">
+                <div>
+                    <b-spinner style="width: 3rem; height: 3rem;"></b-spinner>
                 </div>
-            </b-form>request-
-        </b-modal>
-        <b-modal 
-            v-model="modalAddTitikLokasi" 
-            hide-footer title="Tambah Lokasi" 
-            title-class="exampleModalLabelFolder" 
-            class="v-modal-custom v-modal-custom__2" 
-            modal-class="zoomIn" 
-            centered
-            header-class="p-3 bg-soft-success"
-            no-close-on-backdrop
-            no-close-on-esc
-        >
-            <b-form autocomplete="off" class="needs-validation createfolder-form" id="createfolder-form" novalidate>
-                <b-row class="gy-4 mb-2">
-                    <b-col xxl="6">
-                        <div>
-                            <label for="nama" class="form-label">Nama</label>
-                            <input v-model="namaLokasi" type="text" class="form-control" id="nama">
-                            <span v-if="errors.nama" class="text-required">
-                                {{ errors.nama.toString() }}
-                            </span>
-                        </div>
-                    </b-col>
-                    <b-col xxl="6">
-                        <div>
-                            <label for="no_urut" class="form-label">No. Urut</label>
-                            <input v-model="noUrutLokasi" type="text" class="form-control" id="no_urut">
-                            <span v-if="errors.no_urut" class="text-required">
-                                {{ errors.no_urut.toString() }}
-                            </span>
-                        </div>
-                    </b-col>
-                </b-row>
-                <b-row class="gy-4 mb-2">
-                    <b-col xxl="6">
-                        <div>
-                            <label for="download" class="form-label">Download</label>
-                            <input v-model="download" type="text" class="form-control" id="download">
-                            <span v-if="errors.download" class="text-required">
-                                {{ errors.download.toString() }}
-                            </span>
-                        </div>
-                    </b-col>
-                    <b-col xxl="6">
-                        <div>
-                            <label for="min_download" class="form-label">Min Download</label>
-                            <input v-model="minDownload" type="text" class="form-control" id="min_download">
-                            <span v-if="errors.min_download" class="text-required">
-                                {{ errors.min_download.toString() }}
-                            </span>
-                        </div>
-                    </b-col>
-                </b-row>
-                <b-row class="gy-4 mb-2">
-                    <b-col xxl="6">
-                        <div>
-                            <label for="upload" class="form-label">Upload</label>
-                            <input v-model="upload" type="text" class="form-control" id="upload">
-                            <span v-if="errors.upload" class="text-required">
-                                {{ errors.upload.toString() }}
-                            </span>
-                        </div>
-                    </b-col>
-                    <b-col xxl="6">
-                        <div>
-                            <label for="min_upload" class="form-label">Min Upload</label>
-                            <input v-model="minUpload" type="text" class="form-control" id="min_upload">
-                            <span v-if="errors.min_upload" class="text-required">
-                                {{ errors.min_upload.toString() }}
-                            </span>
-                        </div>
-                    </b-col>
-                </b-row>
-                <b-row class="gy-4 mb-2">
-                    <b-col xxl="6">
-                        <div>
-                            <label for="alamat_ip" class="form-label">Alamat IP</label>
-                            <input v-model="alamatIp" type="text" class="form-control" id="alamat_ip">
-                            <span v-if="errors.alamat_ip" class="text-required">
-                                {{ errors.alamat_ip.toString() }}
-                            </span>
-                        </div>
-                    </b-col>
-                    <b-col xxl="6">
-                        <div>
-                            <label for="nomor_pemasangan" class="form-label">Nomor Pemasangan</label>
-                            <input v-model="nomorPemasangan" type="text" class="form-control" id="nomor_pemasangan">
-                            <span v-if="errors.nomor_pemasangan" class="text-required">
-                                {{ errors.nomor_pemasangan.toString() }}
-                            </span>
-                        </div>
-                    </b-col>
-                </b-row>
-                <b-row class="gy-4 mb-2">
-                    <b-col xxl="6">
-                        <div>
-                            <label for="alamat_pemasangan" class="form-label">Alamat Pemasangan</label>
-                            <input v-model="alamatPemasangan" type="text" class="form-control" id="alamat_pemasangan">
-                            <span v-if="errors.alamat_pemasangan" class="text-required">
-                                {{ errors.alamat_pemasangan.toString() }}
-                            </span>
-                        </div>
-                    </b-col>
-                    <b-col xxl="6">
-                        <div>
-                            <label for="keterangan" class="form-label">Keterangan</label>
-                            <input v-model="keterangan" type="text" class="form-control" id="keterangan">
-                            <span v-if="errors.keterangan" class="text-required">
-                                {{ errors.keterangan.toString() }}
-                            </span>
-                        </div>
-                    </b-col>
-                </b-row>
-                <b-row class="gy-4 mb-2">
-                  <b-col xxl="6">
-                        <div>
-                            <label for="latitude" class="form-label">Latitude</label>
-                            <input v-model="latitude" type="text" class="form-control" id="latitude">
-                            <span v-if="errors.latitude" class="text-required">
-                                {{ errors.latitude.toString() }}
-                            </span>
-                        </div>
-                    </b-col>
-                  <b-col xxl="6">
-                      <div>
-                          <label for="longitude" class="form-label">Longitude</label>
-                          <input v-model="longitude" type="text" class="form-control" id="longitude">
-                          <span v-if="errors.longitude" class="text-required">
-                              {{ errors.longitude.toString() }}
-                          </span>
-                      </div>
-                  </b-col>
-                </b-row>
-                <div class="hstack gap-2 justify-content-end mt-3">
-                    <b-button type="button" variant="ghost-danger" data-bs-dismiss="modal" id="addFolderBtn-close" @click="modalAddTitikLokasi = false">
-                        <i class="ri-close-line align-bottom"></i> Tutup
-                    </b-button>
-                    <b-button type="button" variant="primary" id="createfolder-btn" @click="storeLokasi">
-                        Simpan Data
-                    </b-button>
+                <div class="d-flex flex-column justify-content-center align-items-center gap-1">
+                    <h5 class="mb-0">Harap Tunggu</h5>
+                    <h6 class="mb-0">Laporan sedang dalam proses download</h6>
                 </div>
-            </b-form>
+           </div>
         </b-modal>
     </Layout>
 </template>
@@ -747,5 +288,11 @@ export default {
     display: flex;
     flex-direction: column;
     justify-content: center;
+    a {
+        span {
+            font-size: 12px;
+        }
+    }
   }
 </style>
+file-custom

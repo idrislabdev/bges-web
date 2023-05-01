@@ -8,9 +8,9 @@ import { authMethods } from "@state/helpers";
 export default {
   props: {
     user: {
-      type: Array,
+      type: Object,
       default: () => {
-        return [];
+        return {};
       },
     },
   },
@@ -184,6 +184,9 @@ export default {
     keluar(){
 			this.logOut();
 		},
+    gantiPassword(){
+			this.showModalPassword({modalPassword: true})
+		}
   },
   computed: {},
   mounted() {
@@ -312,6 +315,12 @@ export default {
               </span>
             </button>
             <div class="dropdown-menu dropdown-menu-end">
+              <b-link class="dropdown-item" @click="gantiPassword"
+                ><i
+                  class="mdi mdi-lock-reset text-muted fs-16 align-middle me-1"
+                ></i>
+                <span class="align-middle" data-key="t-logout">Ganti Password</span>
+              </b-link>
               <b-link class="dropdown-item" @click="keluar"
                 ><i
                   class="mdi mdi-logout text-muted fs-16 align-middle me-1"

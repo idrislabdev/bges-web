@@ -95,7 +95,6 @@ export default {
                     this.$router.push({ name: 'ListPengguna' })
                     toast.info(content, {
                         position: toast.POSITION.TOP_CENTER,
-                        theme: toast.auto,
                         closeButton : false,
                         hideProgressBar: true
                     });

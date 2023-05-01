@@ -120,7 +120,6 @@ export default {
                 
                 toast.info(this.title + ' berhasil dihapus', {
                     position: toast.POSITION.TOP_CENTER,
-                    theme: toast.auto,
                     closeButton : false,
                     hideProgressBar: true
                 });

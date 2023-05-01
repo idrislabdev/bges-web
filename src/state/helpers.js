@@ -3,6 +3,8 @@ import { mapState, mapGetters, mapActions } from 'vuex'
 export const authComputed = {
   ...mapState('auth', {
     currentUser: (state) => state.currentUser,
+    modalPassword : (state) => state.modalPassword,
+
   }),
   ...mapGetters('auth', ['loggedIn']),
 }
@@ -21,7 +23,7 @@ export const layoutComputed = {
   })
 }
 
-export const authMethods = mapActions('auth', ['logIn', 'logOut', 'register', 'resetPassword'])
+export const authMethods = mapActions('auth', ['logIn', 'logOut', 'register', 'resetPassword', 'showModalPassword', 'changePassword'])
 
 export const layoutMethods = mapActions('layout', 
 ['changeLayoutType', 'changeLayoutWidth', 'changeSidebarSize', 'changeTopbar', 'changeMode', 'changePosition', 'changeSidebarView',
