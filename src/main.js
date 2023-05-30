@@ -14,7 +14,7 @@ import Maska from 'maska';
 import VueFeather from 'vue-feather';
 import Particles from "particles.vue3";
 import ContextMenu from '@imengyu/vue3-context-menu'
-
+import HighchartsVue from 'highcharts-vue'
 
 import '@assets/scss/config/minimal/app.scss';
 import '@vueform/slider/themes/default.css';
@@ -56,4 +56,5 @@ createApp(App)
     .use(Particles)
     .use(i18n)
     .use(ContextMenu)
+    .use(HighchartsVue)
     .use(vClickOutside).mount('#app');

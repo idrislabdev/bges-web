@@ -132,6 +132,26 @@ export const actions = {
       });
   },
 
+  listDataPost({
+    commit,
+  }, {
+    url,
+    body
+  } = {}) {
+    return broker.fetch.post(url, body)
+      .then(res => {
+        return res
+      }).catch(err => {
+        if (err.response && err.response.status === 401) {
+          commit('SET_CURRENT_USER', null)
+          window.localStorage.clear();
+          alert('Maaf, Session anda telah habis');
+          window.location.reload();
+        }
+        return null
+      });
+  },
+
   deleteData(_, {
     url
   } = {}) {

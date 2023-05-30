@@ -279,17 +279,22 @@ export default {
                     <vue-feather type="home" size="17"></vue-feather>
                   </b-link>
                 </li> -->
-                <li>
+                <li v-b-tooltip.hover title="Laporan">
                   <b-link class="nav-icon" href="#sidebarLaporan" role="button" @click.prevent="updateMenu('sidebarLaporan')">
                     <vue-feather type="printer" size="17"></vue-feather>
                   </b-link>
                 </li>
-                <li>
+                <li v-b-tooltip.hover title="View Per Hari">
+                  <b-link class="nav-icon" href="#sidebarView" role="button" @click.prevent="updateMenu('sidebarView')">
+                    <vue-feather type="bar-chart" size="17"></vue-feather>
+                  </b-link>
+                </li>
+                <li v-b-tooltip.hover title="Setting">
                   <b-link class="nav-icon" href="#sideBarSetting" tool role="button" @click.prevent="updateMenu('sideBarSetting')">
                     <vue-feather type="tool" size="17"></vue-feather>
                   </b-link>
                 </li>
-                <li>
+                <li v-b-tooltip.hover title="Data Master">
                   <b-link class="nav-icon" href="#sidebarMaster" role="button" @click.prevent="updateMenu('sidebarMaster')">
                     <vue-feather type="grid" size="17"></vue-feather>
                   </b-link>
@@ -359,6 +364,18 @@ export default {
                       <li v-for="(item, index) in dinases" class="nav-item" :key="index">
                         <router-link :to="`/laporan/pekerjaan/${item.id}`" class="nav-link" 
                           :class="$route.fullPath === `/laporan/pekerjaan/${item.id}` ? 'active' : ''" data-key="data-pekerjaan">
+                          {{item.nama}}
+                        </router-link>
+                      </li>    
+                    </ul>
+                  </div>
+                </li>
+                <li class="nav-item">
+                  <div class="collapse menu-dropdown" id="sidebarView">
+                    <ul class="nav nav-sm flex-column">                     
+                      <li v-for="(item, index) in dinases" class="nav-item" :key="index">
+                        <router-link :to="`/view/${item.id}`" class="nav-link" 
+                          :class="$route.fullPath === `/view/${item.id}` ? 'active' : ''" data-key="data-pekerjaan">
                           {{item.nama}}
                         </router-link>
                       </li>    

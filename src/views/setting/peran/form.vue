@@ -166,7 +166,7 @@ export default {
                 } else {
                     content = this.title + ' berhasil diperbaharui'
                 }
-                this.$router.push({ name: 'ListPeran' })
+                // this.$router.push({ name: 'ListPeran' })
                 toast.info(content, {
                     position: toast.POSITION.TOP_CENTER,
                     closeButton : false,

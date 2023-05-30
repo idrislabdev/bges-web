@@ -211,6 +211,21 @@ export default [
     
   },
 
+  //view
+  {
+    path: "/view/:route_dinas_id",
+    name: "ViewPekerjaan",
+    meta: {
+      title: "View Pekerjaan",
+      authRequired: true,
+    },
+    component: () => import("../views/view"),
+    props: () => ({
+      user: store.state.auth.currentUser || {}
+    }),
+    
+  },
+
   {
     path: "/file-manager",
     name: "FileManager",

@@ -193,5 +193,16 @@
                 "selected" : false
             }
         ]
+    },
+    {
+        "name": "web.view.grafik",
+        "description": "View Grafik",
+        "child" : [
+            {
+                "name": "web.view.grafik_per_hari",
+                "description": "View Grafik Per Hari",
+                "selected" : false
+            }
+        ]
     }
 ]

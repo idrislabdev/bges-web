@@ -46,6 +46,7 @@ export const crudMethods = mapActions('crud', [
   'updateDataPost',
   'getData',
   'listData',
+  'listDataPost',
   'deleteData',
   'cariData',
   'downloadData',

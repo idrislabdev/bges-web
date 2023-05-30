@@ -164,7 +164,7 @@ export default {
                         <div class="row">
                             <div class="col-sm-12">
                                 <div class="search-box">
-                                    <input v-model="search" type="text" class="form-control" :placeholder="`Cari ${title} ...`">
+                                    <input v-model="search" type="text" class="form-control" :placeholder="`Cari ${title} ...`" autocomplete="off">
                                     <i class="ri-search-line search-icon"></i>
                                 </div>
                             </div>
