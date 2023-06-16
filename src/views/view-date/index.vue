@@ -1,4 +1,7 @@
 <script>
+import flatPickr from "vue-flatpickr-component";
+import "flatpickr/dist/flatpickr.css";
+
 import Layout from "@/src/layouts/main.vue";
 import appConfig from "../../../app.config";
 
@@ -71,12 +74,21 @@ export default {
             page: 1,
             year: moment().format('YYYY'),
             years: [],
+            config: {
+                wrap: true, // set wrap to true only when using 'input-group'
+                altFormat: "M j, Y",
+                altInput: true,
+                dateFormat: "d M, Y",
+            },
+            datePicker: new Date(),
+            periode: '',
         };
     },
     components: {
         Layout,
         Chart,
-        InfiniteLoading
+        InfiniteLoading,
+        flatPickr,
     },
     computed: {},
     watch: {
@@ -114,14 +126,13 @@ export default {
     mounted() {
         // this.modalLoading = true
         this.getPekerjaans()
-        for (var i = this.year; i >= 2023; i--) {
-            this.years.push(i)
-        }
+        this.periode = moment(this.datePicker).format('YYYYMM')
     },
     methods: {
         ...crudMethods,
         ...pageMethods,
         terapkan() {
+            this.periode = moment(this.datePicker).format('YYYYMM')
             this.page = 1;
             this.lokasies = []
             this.infiniteId += 1;     
@@ -158,7 +169,7 @@ export default {
             setTimeout(() => {
                 let body = {
                     "pekerjaan_id": this.pekerjaan.id,
-                    "periode": this.year+this.month
+                    "periode": this.periode
                 }
                 this.listDataPost({
                     url: `/web/view/grafik-per-bulan?page=${this.page++}`,
@@ -207,19 +218,8 @@ export default {
                                 <div class="header-list">
                                     <h5 class="fs-16 mb-0">Pekerjaan {{ pekerjaan.nama }}</h5>
                                     <div class="header-action">
-                                        <b-form-select
-                                            v-model="month"
-                                            :options="months"
-                                            value-field="id"
-                                            text-field="name"
-                                        >
-                                        </b-form-select>
-                                        <b-form-select
-                                            class="year-action"
-                                            v-model="year"
-                                            :options="years"
-                                        >
-                                        </b-form-select>
+                                        <flat-pickr v-model="datePicker" :config="config" class="form-control flatpickr-input"></flat-pickr>
+
                                         <button class="btn btn-danger btn-sm" @click="terapkan">TERAPKAN</button>
                                     </div>
                                 </div>
@@ -232,7 +232,7 @@ export default {
                                     <h6>{{ item.no_urut }}. {{ item.nama }}</h6>
                                     <b-row>
                                         <b-col cols="12" >
-                                            <chart :lokasi="item" />
+                                            <chart :lokasi="item" :tanggal="datePicker"/>
                                         </b-col>
                                     </b-row>
                                 </div>

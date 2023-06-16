@@ -226,6 +226,21 @@ export default [
     
   },
 
+  //view
+  {
+    path: "/view-date/:route_dinas_id",
+    name: "ViewDatePekerjaan",
+    meta: {
+      title: "View Date Pekerjaan",
+      authRequired: true,
+    },
+    component: () => import("../views/view-date"),
+    props: () => ({
+      user: store.state.auth.currentUser || {}
+    }),
+    
+  },
+
   {
     path: "/file-manager",
     name: "FileManager",

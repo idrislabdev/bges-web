@@ -284,9 +284,14 @@ export default {
                     <vue-feather type="printer" size="17"></vue-feather>
                   </b-link>
                 </li>
-                <li v-b-tooltip.hover title="View Per Hari">
+                <li v-b-tooltip.hover title="View Per Bulan">
                   <b-link class="nav-icon" href="#sidebarView" role="button" @click.prevent="updateMenu('sidebarView')">
                     <vue-feather type="bar-chart" size="17"></vue-feather>
+                  </b-link>
+                </li>
+                <li v-b-tooltip.hover title="View Per Hari">
+                  <b-link class="nav-icon" href="#sidebarViewDate" role="button" @click.prevent="updateMenu('sidebarViewDate')">
+                    <vue-feather type="bar-chart-2" size="17"></vue-feather>
                   </b-link>
                 </li>
                 <li v-b-tooltip.hover title="Setting">
@@ -376,6 +381,18 @@ export default {
                       <li v-for="(item, index) in dinases" class="nav-item" :key="index">
                         <router-link :to="`/view/${item.id}`" class="nav-link" 
                           :class="$route.fullPath === `/view/${item.id}` ? 'active' : ''" data-key="data-pekerjaan">
+                          {{item.nama}}
+                        </router-link>
+                      </li>    
+                    </ul>
+                  </div>
+                </li>
+                <li class="nav-item">
+                  <div class="collapse menu-dropdown" id="sidebarViewDate">
+                    <ul class="nav nav-sm flex-column">                     
+                      <li v-for="(item, index) in dinases" class="nav-item" :key="index">
+                        <router-link :to="`/view-date/${item.id}`" class="nav-link" 
+                          :class="$route.fullPath === `/view-date/${item.id}` ? 'active' : ''" data-key="data-pekerjaan">
                           {{item.nama}}
                         </router-link>
                       </li>    
