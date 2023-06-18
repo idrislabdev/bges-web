@@ -218,12 +218,13 @@ export default {
         setPekerjaan(item) {
           if (item.parent_id === null) {
             this.folderActiveId = null
-            this.pekerjaan = item
           } else {
             this.folderActiveId = item.id
-            this.pekerjaan = this.pekerjaans.find((x) => x.id === item.parent_id)
           }
+          this.pekerjaan = item
+
           this.pkIdPekerjaan = item.id;
+          
           
           this.currentPage=1;
           this.listPekerjaanLokasi();
