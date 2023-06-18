@@ -379,7 +379,7 @@ export default {
           <div class="file-manager-content w-100 p-3 py-0 border">
             <div class="mx-n3 pt-4 px-4 file-manager-content-scroll" data-simplebar>
               <div>
-                <div v-if="pekerjaan.nama" class="header-list-action">
+                <div v-if="pekerjaan && pekerjaan.nama" class="header-list-action">
                   <h5 class="flex-grow-1 fs-16 mb-0" id="filetype-title">
                     {{ pekerjaan.nama }}
                   </h5>

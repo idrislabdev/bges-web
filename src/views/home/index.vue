@@ -276,7 +276,7 @@ export default {
           <div class="file-manager-content w-100 p-3 py-0 border">
             <div class="mx-n3 pt-4 px-4 file-manager-content-scroll" data-simplebar>
               <div>
-                <div v-if="pekerjaan.nama" class="row mb-2">
+                <div v-if="pekerjaan && pekerjaan.nama" class="row mb-2">
                     <h5 class="mb-2 p-0">
                       {{ pekerjaan.nama }}
                     </h5>   
