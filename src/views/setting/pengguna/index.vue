@@ -85,6 +85,12 @@ export default {
                 this.isTypingSearch = true
             }
         },
+        currentPage: {
+            handler: function () {
+                  this.getList()
+            },
+            deep: true,
+        },
     },
     mounted() {
         this.getList()

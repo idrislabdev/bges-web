@@ -136,6 +136,11 @@ export default {
                 this.isTypingSearch = true
             }
         },
+        currentPage: {
+          handler: function() {
+            this.listPekerjaanLokasi()
+          }
+        }
     },
     mounted() {
       this.getPekerjaans()

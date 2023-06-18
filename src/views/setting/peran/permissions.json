@@ -184,6 +184,28 @@
         ]
     },
     {
+        "name": "lokasi_pekerjaan",
+        "description": "Lokasi Pekerjaan",
+        "child": [
+            {
+                "name" : "web.lokasi_pekerjaan",
+                "description" : "Manage Lokasi Pekerjaan",
+                "child" : [
+                    {
+                        "name": "web.lokasi_pekerjaan.read",
+                        "description": "Read Lokasi Pekerjaan",
+                        "selected" : false
+                    },
+                    {
+                        "name": "web.lokasi_pekerjaan.update",
+                        "description": "Update Lokasi Pekerjaan",
+                        "selected" : false
+                    }
+                ]
+            }
+        ]
+    },
+    {
         "name": "web.web.laporan",
         "description": "Halaman Laporan",
         "child" : [

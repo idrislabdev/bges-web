@@ -47,7 +47,7 @@ export default {
           this.tryingToLogIn = false;
           this.isAuthError = false;
           this.$router.push({
-            path: "/laporan/pekerjaan/"+response.dinases[0].id,
+            path: "/home/pekerjaan/"+response.dinases[0].id,
           });
         })
         .catch((error) => {

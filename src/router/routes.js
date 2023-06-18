@@ -254,4 +254,34 @@ export default [
     }),
     
   },
+
+   //pekerjaan
+   {
+    path: "/lokasi/pekerjaan/:route_dinas_id",
+    name: "ListLokasiPekerjaan",
+    meta: {
+      title: "Data Lokasi Pekerjaan",
+      authRequired: true,
+    },
+    component: () => import("../views/lokasi/pekerjaan"),
+    props: () => ({
+      user: store.state.auth.currentUser || {}
+    }),
+    
+  },
+
+  //home 
+  {
+    path: "/home/pekerjaan/:route_dinas_id",
+    name: "Home",
+    meta: {
+      title: "Home",
+      authRequired: true,
+    },
+    component: () => import("../views/home"),
+    props: () => ({
+      user: store.state.auth.currentUser || {}
+    }),
+    
+  },
 ];

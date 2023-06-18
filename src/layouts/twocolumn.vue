@@ -273,12 +273,12 @@ export default {
             <div id="two-column-menu">
               <SimpleBar class="twocolumn-iconview list-unstyled">
                 <b-link href="#" class="logo"><img src="@assets/images/logo-tool.png" alt="Logo" height="35" /></b-link>
-                <!-- <li>
-                  <b-link class="nav-icon" href="#sidebarDashboards" role="button"
-                    @click.prevent="updateMenu('sidebarDashboards')">
+                <li>
+                  <b-link class="nav-icon" href="#sidebarHome" role="button"
+                    @click.prevent="updateMenu('sidebarHome')">
                     <vue-feather type="home" size="17"></vue-feather>
                   </b-link>
-                </li> -->
+                </li>
                 <li v-b-tooltip.hover title="Laporan">
                   <b-link class="nav-icon" href="#sidebarLaporan" role="button" @click.prevent="updateMenu('sidebarLaporan')">
                     <vue-feather type="printer" size="17"></vue-feather>
@@ -304,12 +304,11 @@ export default {
                     <vue-feather type="grid" size="17"></vue-feather>
                   </b-link>
                 </li>
-                <!-- <li>
-                  <b-link class="nav-icon" href="#sidebarMaster" role="button" @click.prevent="updateMenu('sidebarTest')">
+                <li v-b-tooltip.hover title="Data Lokasi">
+                  <b-link class="nav-icon" href="#sidebarLokasi" role="button" @click.prevent="updateMenu('sidebarLokasi')">
                     <vue-feather type="calendar" size="17"></vue-feather>
                   </b-link>
-                </li> -->
-               
+                </li>
                 <!-- <li>
                   <b-link class="nav-icon" href="#sidebarPages" role="button" @click.prevent="updateMenu('sidebarPages')">
                     <vue-feather type="settings" size="17"></vue-feather>
@@ -330,6 +329,18 @@ export default {
                   </div>
                 </li>
                 <!-- end Dashboard Menu -->
+                <li class="nav-item">
+                  <div class="collapse menu-dropdown" id="sidebarHome">
+                    <ul class="nav nav-sm flex-column">                     
+                      <li v-for="(item, index) in dinases" class="nav-item" :key="index">
+                        <router-link :to="`/home/pekerjaan/${item.id}`" class="nav-link" 
+                          :class="$route.fullPath === `/home/pekerjaan/${item.id}` ? 'active' : ''" data-key="lokasi-pekerjaan">
+                          {{item.nama}}
+                        </router-link>
+                      </li>    
+                    </ul>
+                  </div>
+                </li>
                 <li class="nav-item">
                   <div class="collapse menu-dropdown" id="sideBarSetting">
                     <ul class="nav nav-sm flex-column">
@@ -393,6 +404,18 @@ export default {
                       <li v-for="(item, index) in dinases" class="nav-item" :key="index">
                         <router-link :to="`/view-date/${item.id}`" class="nav-link" 
                           :class="$route.fullPath === `/view-date/${item.id}` ? 'active' : ''" data-key="data-pekerjaan">
+                          {{item.nama}}
+                        </router-link>
+                      </li>    
+                    </ul>
+                  </div>
+                </li>
+                <li class="nav-item">
+                  <div class="collapse menu-dropdown" id="sidebarLokasi">
+                    <ul class="nav nav-sm flex-column">                     
+                      <li v-for="(item, index) in dinases" class="nav-item" :key="index">
+                        <router-link :to="`/lokasi/pekerjaan/${item.id}`" class="nav-link" 
+                          :class="$route.fullPath === `/lokasi/pekerjaan/${item.id}` ? 'active' : ''" data-key="lokasi-pekerjaan">
                           {{item.nama}}
                         </router-link>
                       </li>    
