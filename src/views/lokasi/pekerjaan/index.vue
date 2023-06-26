@@ -12,6 +12,7 @@ import { debounce } from 'lodash'
 import moment from 'moment';
 import flatPickr from "vue-flatpickr-component";
 import "flatpickr/dist/flatpickr.css";
+import Chart from './chart.vue'
 
 import { onlyNumber } from '@helpers/global-function'
 
@@ -136,12 +137,13 @@ export default {
             datePicker: new Date(),
             dataLokasi: {},
             dataLokasiTanggal: [],
+            tab: 'table'
         };
     },
     components: {
         Layout,
         flatPickr,
-
+        Chart,
     },
     computed: {},
     watch: {
@@ -282,6 +284,7 @@ export default {
           }).then((response) => {
               let { data } = response.data
               this.dataLokasiTanggal = data
+              this.tab = 'tabel'
               this.modalUpdateLokasi = true;
 
           })
@@ -313,7 +316,6 @@ export default {
               body: body,
           }).then((response) => {
               console.log(response)
-              this.modalUpdateLokasi = false
               toast.info(`Data ${this.dataLokasi.nama} Telah Diupdate`, {
                 position: toast.POSITION.TOP_CENTER,
                 closeButton : false,
@@ -400,7 +402,7 @@ export default {
                       <button class="btn btn-danger btn-sm" @click="terapkan">TERAPKAN</button>
                   </div>
                 </div>
-                <div v-if="pekerjaan.nama" class="table-responsive">
+                <div v-if="pekerjaan && pekerjaan.nama" class="table-responsive">
                   <div class="search-box mb-2">
                       <input v-model="search" type="text" autocomplete="off" class="form-control border-light" placeholder="cari lokasi pekerjaan..." />
                       <i class="ri-search-2-line search-icon"></i>
@@ -446,7 +448,7 @@ export default {
                 </div>
 
                 <ul id="pagination" class="pagination pagination-lg"></ul>
-                  <b-row v-if="pekerjaan.nama" class="align-items-center mt-2 g-3 text-center text-sm-start">
+                  <b-row v-if="pekerjaan && pekerjaan.nama" class="align-items-center mt-2 g-3 text-center text-sm-start">
                     <b-col cols="sm">
                       <div class="text-muted">
                         Showing <span class="fw-semibold"> {{  from  }} to {{  to }} </span> of
@@ -477,7 +479,7 @@ export default {
             hide-footer 
             :title="dataLokasi.nama" 
             title-class="exampleModalLabelFolder" 
-            modal-class="zoomIn" 
+            modal-class="zoomIn modal-lg" 
             centered
             header-class="p-3 bg-soft-success"
             no-close-on-backdrop
@@ -488,32 +490,43 @@ export default {
               <flat-pickr v-model="datePicker" :config="config" class="form-control flatpickr-input"></flat-pickr>
               <button class="btn btn-danger" @click="terapkanTanggalLokasi">TERAPKAN</button>
             </div>
-            <div class="col-sm-12 table-scroll">
-              <table class="table align-middle table-nowrap table-sm mb-0">
-                  <thead class="table-active">
-                    <tr>
-                      <th scope="col" class="text-center">Jam</th>
-                      <th scope="col" class="text-center">Download (Mbps)</th>
-                      <th scope="col" class="text-center">Upload (Mbps)</th>
-                    </tr>
-                  </thead>
-                  <tbody>
-                    <tr v-for="(item, index) in dataLokasiTanggal" :key="index">
-                      <td class="text-center">{{ index }}</td>
-                      <td class="text-center">
-                        <input v-model="item.download" class="form-control" @keypress="onlyNumber" />
-                      </td>
-                      <td>
-                        <input v-model="item.upload" class="form-control" @keypress="onlyNumber" />
-                      </td>
-                    </tr>
-                  </tbody>
-              </table>
-            </div>
-          </div>
-          <div class="row">
-            <div class="col-sm-12 d-grid">
-              <button class="btn btn-primary" @click="udpateTanggal">UPDATE DATA</button>
+            <div class="row">
+              <ul class="nav nav-tabs nav-justified mb-4">
+                <li class="nav-item">
+                  <a @click="tab = 'tabel'" class="nav-link" :class="tab === 'tabel' ? 'active' : ''">Tabel</a>
+                </li>
+                <li class="nav-item">
+                  <a @click="tab = 'grafik'" class="nav-link" :class="tab === 'grafik' ? 'active' : ''">Grafik</a>
+                </li>
+              </ul>
+              <div v-if="tab==='tabel'" class="row">
+                <div class="col-sm-12 table-scroll">
+                  <table class="table align-middle table-nowrap table-sm mb-0">
+                      <thead class="table-active">
+                        <tr>
+                          <th scope="col" class="text-center">Jam</th>
+                          <th scope="col" class="text-center">Download (Mbps)</th>
+                          <th scope="col" class="text-center">Upload (Mbps)</th>
+                        </tr>
+                      </thead>
+                      <tbody>
+                        <tr v-for="(item, index) in dataLokasiTanggal" :key="index">
+                          <td class="text-center">{{ index }}</td>
+                          <td class="text-center">
+                            <input v-model="item.download" class="form-control" @keypress="onlyNumber" />
+                          </td>
+                          <td>
+                            <input v-model="item.upload" class="form-control" @keypress="onlyNumber" />
+                          </td>
+                        </tr>
+                      </tbody>
+                  </table>
+                </div>
+                <div class="col-sm-12">
+                  <button class="btn btn-primary btn-block" @click="udpateTanggal">UPDATE DATA</button>
+                </div>
+              </div>
+              <chart v-if="tab==='grafik'" :lokasi="dataLokasi" :tanggal="datePicker"/>
             </div>
           </div>
         </b-modal>
@@ -544,5 +557,18 @@ export default {
   .table-scroll {
     overflow-y: auto;
     height: 330px;
+    margin-bottom: 10px;
+  }
+  .btn-block {
+    width: 100%;
+  }
+  .nav {
+    &.nav-tabs {
+      .nav-item {
+        a {
+          cursor: pointer;
+        }
+      }
+    }
   }
 </style>
