@@ -8,7 +8,7 @@ import { crudMethods, pageMethods } from "@/src/state/helpers";
 
 import 'vue3-toastify/dist/index.css';
 import { debounce } from 'lodash'
-
+import moment from 'moment';
 
 export default {
     page: {
@@ -81,7 +81,10 @@ export default {
             ],
             month : ["Januari","Februari","Maret","April","Mei","Juni","Juli","Agustus","September","Oktober","November","Desember"],
             totalMonths: 0,
-            date: new Date()
+            date: new Date(),
+            dateNow: new Date(),
+            year: moment().format('YYYY'),
+            years: []
         };
     },
     components: {
@@ -114,9 +117,28 @@ export default {
                 this.isTypingSearch = true
             }
         },
+        year: {
+            handler: function(newVal, oldVal) {
+                console.log(newVal)
+                if (newVal !== oldVal) {
+                    if (moment(this.dateNow).format('YYYY') > this.year) {
+                        this.date = new Date(`${this.year}-12-01`)
+                    } else {
+                        this.date = this.dateNow
+                    }
+                }
+            }
+        }
     },
     mounted() {
         // this.modalLoading = true
+        let years = []
+        let year = moment().format('YYYY')
+        for (var i = year; i >= 2023; i--) {
+            years.push(parseInt(i))
+        }
+        this.years = years
+
         this.getPekerjaans()    
     },
     methods: {
@@ -227,33 +249,61 @@ export default {
                           <i class="ri-menu-2-fill align-bottom"></i>
                         </b-button>
                       </div>
-                      <div class="flex-grow-1">
+                      <div class="flex-grow-1 d-flex align-items-center justify-content-between">
                         <h5 class="fs-16 mb-0">Pekerjaan {{ pekerjaan.nama }}</h5>
+                        <div class="year-action-flex">
+                            <label>Pilih Tahun</label>
+                            <b-form-select
+                                v-model="year"
+                                :options="years"
+                            >
+                            </b-form-select>
+                        </div>
                       </div>
                     </div>
                   </b-col>
                 </b-row>
 
                 <b-row id="folderlist-data">
-                  <b-col v-for="i in date.getMonth()" :key="i" cols="6" xxl="2" class=" folder-card">
-                    <b-card no-body class="bg-light shadow-none" id="folder-1">
-                      <b-card-body class="file-custom">
-                        <div class="text-center">
-                          <div class="mb-2">
-                            <i class="ri-file-text-line align-bottom text-warning display-5"></i>
-                          </div>
-                          <a 
-                            href="javascript:void(0);" 
-                            class="fs-15 folder-name stretched-link d-flex flex-column text-dark" 
-                            @click="downloadLaporan(i, date.getFullYear())"
-                          >
-                              <span>Laporan</span>
-                              <span>{{ pekerjaan.nama }}</span>
-                              <span>Bulan {{ month[i-1]  }} {{ date.getFullYear() }}</span>
-                          </a>
-                        </div>
-                      </b-card-body>
-                    </b-card>
+                    <b-col v-for="i in date.getMonth()" :key="i" cols="6" xxl="2" class=" folder-card">
+                        <b-card no-body class="bg-light shadow-none" id="folder-1">
+                        <b-card-body class="file-custom">
+                            <div class="text-center">
+                            <div class="mb-2">
+                                <i class="ri-file-text-line align-bottom text-warning display-5"></i>
+                            </div>
+                            <a 
+                                href="javascript:void(0);" 
+                                class="fs-15 folder-name stretched-link d-flex flex-column text-dark" 
+                                @click="downloadLaporan(i, date.getFullYear())"
+                            >
+                                <span>Laporan</span>
+                                <span>{{ pekerjaan.nama }}</span>
+                                <span>Bulan {{ month[i-1]  }} {{ date.getFullYear() }}</span>
+                            </a>
+                            </div>
+                        </b-card-body>
+                        </b-card>
+                    </b-col>
+                    <b-col v-if="dateNow.getFullYear() > year" cols="6" xxl="2" class=" folder-card">
+                        <b-card no-body class="bg-light shadow-none" id="folder-1">
+                        <b-card-body class="file-custom">
+                            <div class="text-center">
+                            <div class="mb-2">
+                                <i class="ri-file-text-line align-bottom text-warning display-5"></i>
+                            </div>
+                            <a 
+                                href="javascript:void(0);" 
+                                class="fs-15 folder-name stretched-link d-flex flex-column text-dark" 
+                                @click="downloadLaporan(12, date.getFullYear())"
+                            >
+                                <span>Laporan</span>
+                                <span>{{ pekerjaan.nama }}</span>
+                                <span>Bulan {{ month[11]  }} {{ date.getFullYear() }}</span>
+                            </a>
+                            </div>
+                        </b-card-body>
+                        </b-card>
                     </b-col>
                 </b-row>
               </div>
@@ -294,5 +344,16 @@ export default {
         }
     }
   }
+  .year-action-flex {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    label {
+        width: 100px;
+        margin-bottom: 0px;
+    }
+    select {
+        width: 100px;
+    }
+  }
 </style>
-file-custom
