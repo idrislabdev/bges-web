@@ -211,7 +211,7 @@ export default {
         },
         getPekerjaans() {
             this.listData({
-                url: `/web/master/dinas/${this.$route.params.route_dinas_id}/pekerjaan`,
+                url: `/web/master/dinas/${this.$route.params.route_dinas_id}/pekerjaan?status=active`,
             }).then((response) => {
                 const { data } = response.data
                 this.pekerjaans  = data
@@ -404,7 +404,7 @@ export default {
                 </div>
                 <div v-if="pekerjaan && pekerjaan.nama" class="table-responsive">
                   <div class="search-box mb-2">
-                      <input v-model="search" type="text" autocomplete="off" class="form-control border-light" placeholder="cari lokasi pekerjaan..." />
+                      <input v-model="search" id="search-lokasi" type="text" autocomplete="off" class="form-control border-light" placeholder="cari lokasi pekerjaan..." />
                       <i class="ri-search-2-line search-icon"></i>
                   </div>
                   <table class="table align-middle table-nowrap mb-0">

@@ -309,6 +309,11 @@ export default {
                     <vue-feather type="calendar" size="17"></vue-feather>
                   </b-link>
                 </li>
+                <li v-b-tooltip.hover title="Data Downtime">
+                  <b-link class="nav-icon" href="#sidebarLokasi" role="button" @click.prevent="updateMenu('sidebarDowntime')">
+                    <vue-feather type="activity" size="17"></vue-feather>
+                  </b-link>
+                </li>
                 <!-- <li>
                   <b-link class="nav-icon" href="#sidebarPages" role="button" @click.prevent="updateMenu('sidebarPages')">
                     <vue-feather type="settings" size="17"></vue-feather>
@@ -416,6 +421,18 @@ export default {
                       <li v-for="(item, index) in dinases" class="nav-item" :key="index">
                         <router-link :to="`/lokasi/pekerjaan/${item.id}`" class="nav-link" 
                           :class="$route.fullPath === `/lokasi/pekerjaan/${item.id}` ? 'active' : ''" data-key="lokasi-pekerjaan">
+                          {{item.nama}}
+                        </router-link>
+                      </li>    
+                    </ul>
+                  </div>
+                </li>
+                <li class="nav-item">
+                  <div class="collapse menu-dropdown" id="sidebarDowntime">
+                    <ul class="nav nav-sm flex-column">                     
+                      <li v-for="(item, index) in dinases" class="nav-item" :key="index">
+                        <router-link :to="`/lokasi/downtime/${item.id}`" class="nav-link" 
+                          :class="$route.fullPath === `/lokasi/downtime/${item.id}` ? 'active' : ''" data-key="lokasi-downtime">
                           {{item.nama}}
                         </router-link>
                       </li>    

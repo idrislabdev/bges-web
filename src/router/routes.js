@@ -270,6 +270,20 @@ export default [
     
   },
 
+  {
+    path: "/lokasi/downtime/:route_dinas_id",
+    name: "ListLokasiDowntime",
+    meta: {
+      title: "Data Lokasi Downtime",
+      authRequired: true,
+    },
+    component: () => import("../views/lokasi/downtime"),
+    props: () => ({
+      user: store.state.auth.currentUser || {}
+    }),
+    
+  },
+
   //home 
   {
     path: "/home/pekerjaan/:route_dinas_id",

@@ -203,7 +203,7 @@ export default {
         },
         getPekerjaans() {
             this.listData({
-                url: `/web/master/dinas/${this.$route.params.route_dinas_id}/pekerjaan`,
+                url: `/web/master/dinas/${this.$route.params.route_dinas_id}/pekerjaan?status=active`,
             }).then((response) => {
                 const { data } = response.data
                 this.pekerjaans  = data

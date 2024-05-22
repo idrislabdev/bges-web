@@ -103,7 +103,7 @@ export default {
 
                   <div></div>
 
-                  <form @submit.prevent="tryToLogIn">
+                  <form @submit.prevent="tryToLogIn" autocomplete="off">
                     <div class="mb-3">
                       <label for="username" class="form-label">Username</label>
                       <input
