@@ -310,7 +310,7 @@ export default {
                   </b-link>
                 </li>
                 <li v-b-tooltip.hover title="Data Downtime">
-                  <b-link class="nav-icon" href="#sidebarLokasi" role="button" @click.prevent="updateMenu('sidebarDowntime')">
+                  <b-link class="nav-icon" href="#sidebarDowntime" role="button" @click.prevent="updateMenu('sidebarDowntime')">
                     <vue-feather type="activity" size="17"></vue-feather>
                   </b-link>
                 </li>
