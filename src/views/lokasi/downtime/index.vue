@@ -267,33 +267,21 @@ export default {
     <Layout>
         <div class="chat-wrapper d-lg-flex gap-1 mx-n4 mt-n4 p-1">
           <div class="file-manager-sidebar border">
-              <div class="p-3 d-flex flex-column h-100">
-                  <div class="mt-3 mx-n4 px-4 file-menu-sidebar-scroll" data-simplebar>
-                      <ul class="list-unstyled file-manager-menu">
-                          <li v-for="(item, index) in pekerjaans" :key="index">
-                              <b-link role="button" v-b-toggle="`pekerjaan-${index}`" 
-                                  @click="setPekerjaan(item)"  
-                                >
-                                  <i class="ri-folder-2-line align-bottom me-2"></i>
-                                  <span class="file-list-link">{{item.nama}}</span>
-                              </b-link>
-                              <b-collapse :id="`pekerjaan-${index}`">
-                              <ul class="sub-menu list-unstyled">
-                                  <li v-for="(sub, indexSub) in item.subs" :key="indexSub">
-                                      <b-link 
-                                        :class="sub.id === folderActiveId ? 'active' : ''"
-                                        @click="setPekerjaan(sub)"
-                                      >
-                                        {{sub.nama}}
-                                      </b-link>
-                                  </li>
-                              </ul>
-                              </b-collapse>
-                          </li>
-                      </ul>
-                  </div>
-              </div>
-          </div>
+                <div class="p-3 d-flex flex-column h-100">
+                    <div class="mt-3 mx-n4 px-4 file-menu-sidebar-scroll-2" data-simplebar>
+                        <ul class="list-unstyled file-manager-menu">
+                            <li v-for="(item, index) in pekerjaans" :key="index">
+                                <b-link role="button" :class="item.id === pekerjaan.id ? 'active' : ''"
+                                    @click="setPekerjaan(item)"  
+                                  >
+                                    <i class="ri-folder-2-line align-bottom me-2"></i>
+                                    <span class="file-list-link">{{item.nama}}</span>
+                                </b-link>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
           <div class="file-manager-content w-100 p-3 py-0 border">
             <div class="mx-n3 pt-4 px-4 file-manager-content-scroll" data-simplebar>
               <div>
